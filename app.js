@@ -20,16 +20,20 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // Importacion de rutas
-var appRoutes = require('./routes/app');
-var usuarioRoutes = require('./routes/usuario');
-var loginRoutes = require('./routes/login');
+var busquedaRouters = require('./routes/busqueda');
 var hospitalRoutes =  require('./routes/hospital');
+var usuarioRoutes = require('./routes/usuario');
 var medicoRouters = require('./routes/medico');
+var uploadRoutes = require('./routes/upload')
+var loginRoutes = require('./routes/login');
+var appRoutes = require('./routes/app');
 
 // Definicion de rutas
-app.use('/usuarios', usuarioRoutes );
+app.use('/busqueda', busquedaRouters);
 app.use('/hospital', hospitalRoutes);
+app.use('/usuarios', usuarioRoutes);
 app.use('/medico', medicoRouters);
+app.use('/upload', uploadRoutes);
 app.use('/login', loginRoutes);
 app.use( '/', appRoutes );
 

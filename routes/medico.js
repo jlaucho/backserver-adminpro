@@ -16,7 +16,12 @@ var Medico = require('./../models/medico');
  */
 app.get('/', (request, response, next)=>{
 
+    var desde = request.query.desde || 0;
+    desde = Number(desde);
+    
     Medico.find({})
+    .skip(desde)
+    .limit(5)
     .populate('usuario', 'email nombre')
     .populate('hospital', 'nombre')
     .exec(
@@ -37,10 +42,13 @@ app.get('/', (request, response, next)=>{
                 'errors': { error } 
             });    
         }
-        
-        return response.status( 200 ).json({
-            'ok': true,
-            'medicos': medicos 
+        Medico.count( ( error, totalMedicos )=>{
+
+            return response.status( 200 ).json({
+                'ok': true,
+                'total': totalMedicos,
+                'medicos': medicos 
+            });
         });
     });
 });

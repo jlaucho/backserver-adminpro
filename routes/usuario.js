@@ -15,7 +15,12 @@ var app = express();
  */
 app.get('/', (request, response, next)=>{
 
+    var desde = request.query.desde || 0;
+    desde = Number(desde);
+    
     Usuario.find({},'nombre email rol img')
+    .skip(desde)
+    .limit(5)
     .exec( 
         ( error, usuarios ) =>{
 
@@ -26,10 +31,22 @@ app.get('/', (request, response, next)=>{
                 'errors': { error } 
             });    
         }
-        
-        return response.status( 200 ).json({
-            'ok': true,
-            'usuarios': usuarios 
+
+        Usuario.count( ( error, totalUser )=>{
+
+            if( error ){
+                return response.status( 500 ).json({
+                    'ok': false,
+                    'mensaje': 'Error realizando la cuenta de usuarios',
+                    'errors': { error } 
+                });    
+            }
+            
+            return response.status( 200 ).json({
+                'ok': true,
+                'total': totalUser,
+                'usuarios': usuarios
+            });
         });
     });
 });

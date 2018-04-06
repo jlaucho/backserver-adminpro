@@ -15,7 +15,12 @@ Hospital = require('./../models/holspital');
  */
 app.get('/', ( request, response, next )=>{
 
+    var desde = request.query.desde || 0;
+    desde = Number(desde);
+
     Hospital.find({})
+        .skip(desde)
+        .limit(5)
         .populate('usuario', 'nombre email')
         .exec(
          ( error, hospitales )=>{
@@ -36,9 +41,19 @@ app.get('/', ( request, response, next )=>{
             });
         }
         
-        return response.status( 200 ).json({
-            'ok': true,
-            'hospitales': hospitales,
+        Hospital.count(( error, totalHospitales )=>{
+            if( error ){
+                return response.status( 500 ).json({
+                    'ok': false,
+                    'mensaje': 'error al realizar el conteo de hospitales',
+                    'errors': error
+                });
+            }
+            return response.status( 200 ).json({
+                'ok': true,
+                'total': totalHospitales,
+                'hospitales': hospitales
+            });
         });
     });
     
