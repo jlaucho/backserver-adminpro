@@ -14,17 +14,17 @@ Hospital = require('./../models/holspital');
 /**
  * BUSCAR EN TODAS LAS COLECCIONES
  */
-app.get('/todo/:busqueda', (request, response, next)=>{
+app.get('/todo/:busqueda', (request, response, next) => {
 
     let busqueda = request.params.busqueda;
-    let regEx = new RegExp( busqueda, 'i' );
+    let regEx = new RegExp(busqueda, 'i');
 
     Promise.all([
         buscarHospitales(busqueda, regEx),
         buscarMedicos(busqueda, regEx),
         buscarUsuarios(busqueda, regEx)
-    ]).then( respuestas =>{
-        return response.status( 200 ).json({
+    ]).then(respuestas => {
+        return response.status(200).json({
             'ok': true,
             'mensaje': 'Peticion realizada correctamente',
             'hospitales': respuestas[0],
@@ -35,14 +35,14 @@ app.get('/todo/:busqueda', (request, response, next)=>{
 })
 
 /**
- * BUSCAR EN LA COLECCION DE MEDICOS
+ * BUSCAR EN LA COLECCION SEGUN LA COLECCION DE BUSQUEDA
  */
-app.get('/coleccion/:coleccion/:busqueda', (request, response, next)=>{
+app.get('/coleccion/:coleccion/:busqueda', (request, response, next) => {
 
     let busqueda = request.params.busqueda;
     let coleccion = request.params.coleccion;
 
-    let regEx = new RegExp( busqueda, 'i' );
+    let regEx = new RegExp(busqueda, 'i');
 
     let promise;
 
@@ -56,17 +56,17 @@ app.get('/coleccion/:coleccion/:busqueda', (request, response, next)=>{
         case 'hospital':
             promise = buscarHospitales(busqueda, regEx);
             break;
-    
+
         default:
-            return response.status( 400 ).json({
+            return response.status(400).json({
                 'ok': false,
                 'mensaje': 'La coleccion solicitada no se encuentra registrada en nuestro sistema, favor verifique y vuelva a intentar '
             });
             break;
     }
 
-    promise.then( respuesta =>{
-        return response.status( 200 ).json({
+    promise.then(respuesta => {
+        return response.status(200).json({
             'ok': true,
             'mensaje': 'Peticion realizada correctamente',
             [coleccion]: respuesta
@@ -74,48 +74,61 @@ app.get('/coleccion/:coleccion/:busqueda', (request, response, next)=>{
     });
 })
 
+/**
+ * FUNCION DE BUSQUEDA DE HOSPITALES
+ */
 
-function buscarHospitales( busqueda, regex ){
-    return new Promise(( resolve, reject )=>{
+function buscarHospitales(busqueda, regex) {
+    return new Promise((resolve, reject) => {
         Hospital.find({ 'nombre': regex })
             .populate('usuario', 'nombre email')
-            .exec( 
-                (error, hospitales)=>{
-                if(error){
-                    reject('Error al buscar los hospitales'+ error);
-                }else{
-                    resolve(hospitales);
-                }
-            });
-        });
-}
-function buscarMedicos( busqueda, regex ){
-    return new Promise(( resolve, reject )=>{
-        Medico.find({ 'nombre': regex })
-        .populate('usuario', 'nombre email')
-        .populate('hospital')
-        .exec(
-            (error, medicos)=>{
-            if(error){
-                reject('Error al buscar los medicos'+ error);
-            }else{
-                resolve(medicos);
-            }
-        });
+            .exec(
+                (error, hospitales) => {
+                    if (error) {
+                        reject('Error al buscar los hospitales' + error);
+                    } else {
+                        resolve(hospitales);
+                    }
+                });
     });
 }
-function buscarUsuarios( busqueda, regex ){
-    return new Promise(( resolve, reject )=>{
-        Usuario.find({}, 'nombre email rol')
-            .or([{ 'nombre': regex }, {'email': regex}])
+/**
+ * FUNCION DE BUSQUEDA DE MEDICOS
+ * @param {*} busqueda 
+ * @param {*} regex 
+ */
+function buscarMedicos(busqueda, regex) {
+    return new Promise((resolve, reject) => {
+        Medico.find({ 'nombre': regex })
+            .populate('usuario', 'nombre email')
+            .populate('hospital')
             .exec(
-                (error, usuarios)=>{
-                if(error){
-                    reject('Error al buscar los usuarios'+ error);
-                }else{
-                    resolve(usuarios);
-                }
-        });
+                (error, medicos) => {
+                    if (error) {
+                        reject('Error al buscar los medicos' + error);
+                    } else {
+                        resolve(medicos);
+                    }
+                });
+    });
+}
+/**
+ * FUNCION DE BUSQUEDA DE USUARIOS
+ * @param { coleccion } busqueda 
+ * @param { el temino de busqueda en expresion regular } regex 
+ */
+function buscarUsuarios(busqueda, regex) {
+    return new Promise((resolve, reject) => {
+        Usuario.find({}, 'nombre email rol')
+            .or([{ 'nombre': regex }, { 'email': regex }])
+            .exec(
+                (error, usuarios) => {
+                    if (error) {
+                        reject('Error al buscar los usuarios' + error);
+                    } else {
+                        resolve(usuarios);
+                    }
+                });
     });
 }
 
