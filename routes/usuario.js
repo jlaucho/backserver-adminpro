@@ -106,7 +106,7 @@ app.get('/', (request, response, next)=>{
  * CREAR USUARIO
  */
 
-app.post('/',  mdAutenticacion.verificaToken, (request, response, next) =>{
+app.post('/',  (request, response, next) =>{
 
     var body = request.body;
 
