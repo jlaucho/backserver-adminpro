@@ -49,17 +49,23 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        if ($exception instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) {
-          return response()->json(['error' => 'token_expirado'], $exception->statusCode());
-        } else if ($exception instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException) {
-          return response()->json(['error' => 'token_invalido'], $exception->statusCode());
-        } else if ($exception instanceof \Tymon\JWTAuth\Exceptions\TokenBlacklistException) {
-          return response()->json(['error' => 'token_en_lista_negra'], $exception->statusCode());
-        } else if ($exception instanceof \Tymon\JWTAuth\Exceptions\JWTException) {
-          return response()->json(['error' => $exception->getMessage()], $exception->statusCode());
-        } else if ($exception instanceof ValidationException) {
-          return response()->json($exception->errors(), 422);
+
+        // if ($exception instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) {
+        //   return response()->json(['error' => 'token_expirado'], $exception->statusCode());
+        // } else if ($exception instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException) {
+        //   return response()->json(['error' => 'token_invalido'], $exception->statusCode());
+        // } else if ($exception instanceof \Tymon\JWTAuth\Exceptions\TokenBlacklistException) {
+        //   return response()->json(['error' => 'token_en_lista_negra'], $exception->statusCode());
+        // } else
+
+
+        if ($exception instanceof \Illuminate\Auth\AuthenticationException) {
+          return response()->json(['ok'=>false,'error' => ['token'=>'Problemas de autenticacion']], 401);
+        } else
+        if ($exception instanceof ValidationException) {
+          return response()->json(['ok'=>false, 'error' => $exception->errors()], 422);
         }
-        return parent::render($request, $exception);
+        return response()->json(['ok'=>false, 'error' => $exception->getMessage()], 500);
+        // return parent::render($request, $exception);
     }
 }

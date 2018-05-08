@@ -15,6 +15,7 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\UserLoginRequest;
 
 class AuthController extends Controller
 {
@@ -33,15 +34,18 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login()
+    public function login( UserLoginRequest $request )
     {
         $credentials = request(['email', 'password']);
 
         if (! $token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json([
+              'ok'    =>false,
+              'error' => ['datos'=>'Credenciales invalidas']
+            ], 401);
         }
 
-        return $this->respondWithToken($token);
+        return $this->respondWithToken( $token );
     }
 
     /**
@@ -51,7 +55,11 @@ class AuthController extends Controller
      */
     public function me()
     {
-        return response()->json(auth()->user());
+        return response()->json([
+          'ok' => true,
+          'user'=> auth()->user(),
+          'token'=> auth()->getToken(),
+        ]);
     }
 
     /**
@@ -63,7 +71,10 @@ class AuthController extends Controller
     {
         auth()->logout();
 
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json([
+          'ok' => true,
+          'mensaje' => 'Sesion cerrada correctamente'
+        ]);
     }
 
     /**
@@ -86,9 +97,11 @@ class AuthController extends Controller
     protected function respondWithToken($token)
     {
         return response()->json([
-            'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
+          'ok'=>true,
+          'user'=> auth()->user(),
+          'token' => $token,
+          'token_type' => 'bearer',
+          'expires_in' => auth()->factory()->getTTL() * 60,
         ]);
     }
 }
