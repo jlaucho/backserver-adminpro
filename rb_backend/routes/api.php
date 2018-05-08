@@ -12,14 +12,15 @@
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+/**
+ *
+ * Rutas de le Auth del sistema
+ *
+ */
 
 Route::group([
 
-    'middleware' => 'api',
+    // 'middleware' => 'api',
     'prefix' => 'auth',
     'namespace'=> 'Api\\'
 
@@ -31,8 +32,31 @@ Route::group([
     Route::post('me', 'AuthController@me');
 
 });
+/**
+ *
+ * Rutas de Usuarios del sistema
+ *
+ */
 
 Route::group(['prefix'=>'user', 'namespace'=>'user\\'], function()
 {
+	// Ruta libre para registro de usuarios
   Route::post('store', 'UserController@store')->name('user.store');
+  // rutas con proteccion de token
+  Route::group(['middleware' => 'auth:api'], function( $router ) {
+  		Route::get('', 'UserController@userList')->name('user.list');
+  		Route::put('/{id}', 'UserController@update')->name('user.update');
+  		Route::delete('/{id}', 'UserController@delete')->name('user.delete');
+  });
 });
+/**
+ *
+ * Rutas de las busquedas del sistema
+ *
+ */
+Route::group(['prefix' => 'buscar', 'namespace'=>'busqueda\\', 'middleware'=>'auth:api'], function() {
+  Route::get('{collection}/{id}', 'BusquedaController@por_coleccion')->name('busqueda.por_colleccion');
+});
+
+
+

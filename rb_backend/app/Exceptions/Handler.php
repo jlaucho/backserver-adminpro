@@ -58,14 +58,26 @@ class Handler extends ExceptionHandler
         //   return response()->json(['error' => 'token_en_lista_negra'], $exception->statusCode());
         // } else
 
+        // Excepciones de Base de datos
+        if ($exception instanceof \Illuminate\Database\QueryException) {
+            if( $exception->errorInfo[1] == 1062 ){
+                return response()->json(['ok'=>false,'error' => ['database'=> 'El correo debe ser unico']], 400);
+            }
+            if( $exception->errorInfo[1] == 1146 ){
+                return response()->json(['ok'=>false,'error' => ['database'=> 'La tabla no existe']], 400);
+            }
+        } else
 
+        // Excepciones de Autenticacion disparada por el token
         if ($exception instanceof \Illuminate\Auth\AuthenticationException) {
           return response()->json(['ok'=>false,'error' => ['token'=>'Problemas de autenticacion']], 401);
         } else
+        
+        // Excepciones de Validacion disparadas por los request
         if ($exception instanceof ValidationException) {
           return response()->json(['ok'=>false, 'error' => $exception->errors()], 422);
         }
-        return response()->json(['ok'=>false, 'error' => $exception->getMessage()], 500);
+        return response()->json(['ok'=>false, 'error' => ['error' => $exception->getMessage()]], 500);
         // return parent::render($request, $exception);
     }
 }

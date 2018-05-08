@@ -57,8 +57,7 @@ class AuthController extends Controller
     {
         return response()->json([
           'ok' => true,
-          'user'=> auth()->user(),
-          'token'=> auth()->getToken(),
+          'user'=> auth()->user()
         ]);
     }
 

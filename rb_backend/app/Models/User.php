@@ -5,10 +5,12 @@ namespace App\Models;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -17,6 +19,7 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $table      = 'users';
     protected $primaryKey = 'id';
+    protected $dates = ['deleted_at'];
     
     protected $fillable = [
         'name', 'apellido','direccion', 'cedula', 'email', 'type', 'password', 'created_at',
