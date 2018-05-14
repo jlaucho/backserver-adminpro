@@ -19,7 +19,9 @@ class Empresas extends Migration
             $table->string('direccion', 250);
             $table->string('descripcion', 250);
             $table->string('telefono', 15);
+
             $table->timestamps();
+            $table->softDeletes();
             //
         });
     }

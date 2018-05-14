@@ -63,8 +63,14 @@ class Handler extends ExceptionHandler
             if( $exception->errorInfo[1] == 1062 ){
                 return response()->json(['ok'=>false,'error' => ['database'=> 'El correo debe ser unico']], 400);
             }
+            if( $exception->errorInfo[1] == 1364 ){
+                return response()->json(['ok'=>false,'error' => ['database'=> 'Revise los datos, hay campos que no tienen valores por defecto']], 400);
+            }
             if( $exception->errorInfo[1] == 1146 ){
                 return response()->json(['ok'=>false,'error' => ['database'=> 'La tabla no existe']], 400);
+            }
+            if( $exception->errorInfo[1] == 1292 ){
+                return response()->json(['ok'=>false,'error' => ['database'=> 'El formato de fecha es incorrecto']], 400);
             }
         } else
 

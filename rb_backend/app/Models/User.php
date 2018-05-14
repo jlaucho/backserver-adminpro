@@ -55,4 +55,14 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    public function r_registrado()
+      {
+        return $this->hasMany('App\Models\CorreosEnviados', 'registrado_por', 'id');
+      }
+
+    public function r_realizado()
+      {
+        return $this->hasMany('App\Models\CorreosEnviados', 'realizado_por', 'id');
+      }
 }

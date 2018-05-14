@@ -45,8 +45,8 @@ Route::group(['prefix'=>'user', 'namespace'=>'user\\'], function()
   // rutas con proteccion de token
   Route::group(['middleware' => 'auth:api'], function( $router ) {
   		Route::get('', 'UserController@userList')->name('user.list');
-  		Route::put('/{id}', 'UserController@update')->name('user.update');
-  		Route::delete('/{id}', 'UserController@delete')->name('user.delete');
+      Route::put('/{id}', 'UserController@update')->name('user.update');
+      Route::delete('/{id}', 'UserController@delete')->name('user.delete');
   });
 });
 /**
@@ -57,6 +57,40 @@ Route::group(['prefix'=>'user', 'namespace'=>'user\\'], function()
 Route::group(['prefix' => 'buscar', 'namespace'=>'busqueda\\', 'middleware'=>'auth:api'], function() {
   Route::get('{collection}/{id}', 'BusquedaController@por_coleccion')->name('busqueda.por_colleccion');
 });
+/**
+ *
+ * Rutas de Empresas en el sistema
+ *
+ */
+Route::group(['prefix' => 'empresa', 'namespace'=>'empresa\\', 'middleware'=>'auth:api'], function() {
+    Route::post('store', 'EmpresaController@store')->name('empresa.store');
+    Route::get('', 'EmpresaController@empresasList')->name('empresa.list');
+    Route::put('/{id}', 'EmpresaController@update')->name('empresa.update');
+    Route::delete('/{id}', 'EmpresaController@delete')->name('empresa.delete');
+});
+/**
+ *
+ * Rutas de CorreosEnviados en el sistema
+ *
+ */
+Route::group(['prefix' => 'correo', 'namespace'=>'correosEnviados\\', 'middleware'=>'auth:api'], function() {
+    Route::post('store', 'CorreosEnviadosController@store')->name('correo.store');
+    Route::get('', 'CorreosEnviadosController@correoList')->name('correo.list');
+    // Route::put('/{id}', 'CorreosEnviadosController@update')->name('correo.update');
+    // Route::delete('/{id}', 'CorreosEnviadosController@delete')->name('correo.delete');
+});
+/**
+ *
+ * Rutas de Facturas en el sistema
+ *
+ */
+Route::group(['prefix' => 'factura', 'namespace'=>'factura\\', 'middleware'=>'auth:api'], function() {
+    Route::post('store', 'FacturaController@store')->name('factura.store');
+    Route::get('', 'FacturaController@empresasList')->name('factura.list');
+    Route::put('/{id}', 'FacturaController@update')->name('factura.update');
+    Route::delete('/{id}', 'FacturaController@delete')->name('factura.delete');
+});
+
 
 
 

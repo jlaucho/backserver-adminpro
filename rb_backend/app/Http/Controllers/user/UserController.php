@@ -10,6 +10,14 @@ use App\Http\Requests\UserCreateRequest;
 
 class UserController extends Controller
 {
+  /**
+  *
+  * Store the User
+  * @return json Object
+  * @param request user data
+  * @method POST
+  *
+  */
   public function store( UserCreateRequest $request )
   {
   	try {
@@ -19,11 +27,11 @@ class UserController extends Controller
       $user->password = bcrypt( $request->password );
       $user->save();
     } catch (\Exception $e) {
-          return response()->json([
-            'error'   => $e->getMessage(),
-            'ok'      =>false,
-            'mensaje' =>'Error al intentar guardar el nuevo usuario',
-          ], 500);      
+      return response()->json([
+        'error'   => $e->getMessage(),
+        'ok'      =>false,
+        'mensaje' =>'Error al intentar guardar el nuevo usuario',
+      ], 500);      
     }
     // Autenticacion automatica despues del registro
     $credentials = request(['email', 'password']);
@@ -41,6 +49,7 @@ class UserController extends Controller
         'user'=> $user
       ], 201 );
   }
+  /*---------------------------------------------------------------------------------------*/
   /**
   *
   * List the Users
@@ -71,6 +80,7 @@ class UserController extends Controller
       ], 500);
     }
   }
+  /*---------------------------------------------------------------------------------------*/
   /**
    *
    * PUT method, update User for id
@@ -98,9 +108,11 @@ class UserController extends Controller
 
     return response()->json([
       'ok'=>true,
-      'user'=>$user
+      'user'=>$user,
+      'mensaje'=>'El usuario se actualizo corectamente'
     ], 202);
   }
+  /*---------------------------------------------------------------------------------------*/
   /**
    *
    * DELETE method, delete user from database
@@ -126,5 +138,6 @@ class UserController extends Controller
       ], 202);
 
   }
-  
+  /*---------------------------------------------------------------------------------------*/
+
 }

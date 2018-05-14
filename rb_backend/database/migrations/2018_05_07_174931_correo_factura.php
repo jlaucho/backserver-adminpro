@@ -22,6 +22,9 @@ class CorreoFactura extends Migration
             // Tabla de Facturas
             $table->integer('factura_id')->unsigned()->comment('Le hace referencia a la factura');
             $table->foreign('factura_id')->references('idFacturas')->on('facturas')->onDelete('cascade');
+            // Propis de la tabla
+            $table->string('ODC', 14)->nullable();
+            $table->string('descripcion', 200);
 
             $table->timestamps();
         });

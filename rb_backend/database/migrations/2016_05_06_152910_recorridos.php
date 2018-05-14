@@ -20,6 +20,7 @@ class Recorridos extends Migration
             $table->enum('concepto', ['DesvInter', 'DesvExter', 'Traslado'])->default('Traslado')->comment('Este es el concepto por el cual se origino el recorrido');
             $table->enum('encomienda', ['SI', 'NO'])->default('NO')->comment('Si el recorrido contempla encomienda');
             $table->enum('nocturno', ['SI', 'NO'])->default('NO')->comment('Si el recorrido contempla bono nocturno');
+            $table->float('recorrido')->comment('Monto a cobrar por el servicio individual');
             $table->float('totalRecorrido')->comment('Monto total del recorrido');
             $table->integer('correo_id')->unsigned()->comment('Le hace referencia a cual correo se refiere este recorrido');
             $table->foreign('correo_id')->references('idCorreos')->on('correosEnviados')->onDelete('cascade');
