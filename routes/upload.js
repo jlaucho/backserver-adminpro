@@ -53,7 +53,7 @@ app.put('/:tipo/:id', (request, response, next) => {
     if (permitidas.indexOf(ext) < 0) {
         return response.status(400).json({
             'ok': false,
-            'mensaje': 'Extension no valida',
+            'mensaje': 'Extension no validas',
             'errors': { menssage: 'Las extensiones validas son ' + permitidas.join(", ") }
         });
     }
@@ -93,7 +93,7 @@ function subirPorTipo(tipo, id, nombreArchivo, response) {
                     'errors': error
                 });
             }
-
+            
             if (!usuarioEncontrado) {
                 return response.status(400).json({
                     'ok': true,
@@ -104,7 +104,8 @@ function subirPorTipo(tipo, id, nombreArchivo, response) {
             // Si existe elimina la imagen anterior del usuario
             var pathViejo = `uploads/usuarios/${ usuarioEncontrado.img }`;
             if (fs.existsSync(pathViejo)) {
-                fs.unlink(pathViejo);
+                console.log('==========================================================================');
+                fs.unlinkSync(pathViejo);
             }
 
             usuarioEncontrado.img = nombreArchivo;
