@@ -2,7 +2,8 @@
 
 var express = require('express');
 var mongoose = require('mongoose');
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
+const port = process.env.PORT || 3000;
 
 // Conexion a la base de datos
 
@@ -48,6 +49,6 @@ app.use('/login', loginRoutes);
 app.use('/', appRoutes);
 
 // Escuchar peticiones
-app.listen(3000, () => {
-    console.log('Express server corriendo en el puerto 3000: \x1b[32m%s\x1b[0m', 'online');
+app.listen(port, () => {
+    console.log(`Express server corriendo en el puerto ${ port }: \x1b[32m%s\x1b[0m`, 'online');
 });
