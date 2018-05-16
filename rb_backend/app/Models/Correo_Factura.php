@@ -9,7 +9,7 @@ class Correo_Factura extends Model
     protected $table 			  = 'correo_factura';
     protected $primaryKey 	= 'id';
     protected $fillable 		= [
-    	'correo_id', 'factura_id' , 'ODC' , 'descripcion', 'created_at'
+    	'correo_id', 'factura_id' ,'totalRenglonFactura', 'cantServicios','codigo', 'ODC' , 'descripcion', 'created_at'
     ];
 
     /**

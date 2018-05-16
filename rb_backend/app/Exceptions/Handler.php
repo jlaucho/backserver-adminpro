@@ -49,7 +49,6 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-
         // if ($exception instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) {
         //   return response()->json(['error' => 'token_expirado'], $exception->statusCode());
         // } else if ($exception instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException) {
@@ -62,6 +61,9 @@ class Handler extends ExceptionHandler
         if ($exception instanceof \Illuminate\Database\QueryException) {
             if( $exception->errorInfo[1] == 1062 ){
                 return response()->json(['ok'=>false,'error' => ['database'=> 'El correo debe ser unico']], 400);
+            }
+            if( $exception->errorInfo[1] == 1452 ){
+                return response()->json(['ok'=>false,'error' => ['database'=> 'Error con la llave foranea']], 400);
             }
             if( $exception->errorInfo[1] == 1364 ){
                 return response()->json(['ok'=>false,'error' => ['database'=> 'Revise los datos, hay campos que no tienen valores por defecto']], 400);
@@ -78,12 +80,17 @@ class Handler extends ExceptionHandler
         if ($exception instanceof \Illuminate\Auth\AuthenticationException) {
           return response()->json(['ok'=>false,'error' => ['token'=>'Problemas de autenticacion']], 401);
         } else
-        
+        // Excepciones de pagina not found
+        if ($exception instanceof \Symfony\Component\HttpKernel\Exception\HttpException) {
+          return response()->json(['ok'=>false,'error' => ['page'=>'Pagina no encontrada']], 404);
+        } else
         // Excepciones de Validacion disparadas por los request
         if ($exception instanceof ValidationException) {
           return response()->json(['ok'=>false, 'error' => $exception->errors()], 422);
         }
+        // return $exception;
         return response()->json(['ok'=>false, 'error' => ['error' => $exception->getMessage()]], 500);
+        
         // return parent::render($request, $exception);
     }
 }

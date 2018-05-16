@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\correosEnviados;
+namespace App\Http\Controllers\servicios;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\CorreosEnviados;
 use App\Models\Recorridos;
 
-class CorreosEnviadosController extends Controller
+class ServiciosController extends Controller
 {
   /**
   *

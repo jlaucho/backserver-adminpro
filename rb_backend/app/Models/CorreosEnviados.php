@@ -68,7 +68,7 @@ class CorreosEnviados extends Model
 
         return $correo;
       }
-
+      // Siempre va a recorrer el foreach
       foreach ($correos as $key => $correo) {
         $correo->r_realizado;
         $correo->r_registrado;

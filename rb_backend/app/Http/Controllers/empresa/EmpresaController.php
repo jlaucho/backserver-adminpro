@@ -73,14 +73,16 @@ class EmpresaController extends Controller
   public function update( Request $request, $idEmpresa )
   {
     $empresa = Empresas::find( $idEmpresa );
+
     
     if( !$empresa ){
       return response()->json([
         'ok'=>false,
         'empresa'=>NULL,
         'error'=> ['empresa'=>'No existe empresa con el ID '. $idEmpresa]
-      ], 204);
+      ], 400);
     }
+    // return response()->json(['estamo'=> $empresa ], 200);
 
     $empresa->fill( $request->all() );
 

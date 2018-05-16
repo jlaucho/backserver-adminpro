@@ -9,7 +9,7 @@ class Facturas extends Model
     protected $table 			  = 'facturas';
     protected $primaryKey 	= 'idFacturas';
     protected $fillable 		= [
-    	'idFacturas', 'numFactura' , 'fechaFactura' , 'codigo', 'descripcionFactura', 'baseImponible', 'IVA_por', 'IVA_monto', 'totalFact', 'pagada', 'empresas_id', 'created_at'
+    	'idFacturas', 'numFactura' , 'fechaFactura' , 'descripcionFactura', 'baseImponible', 'IVA_por', 'IVA_monto', 'totalFact', 'pagada', 'empresas_id', 'created_at'
     ];
 
     /**

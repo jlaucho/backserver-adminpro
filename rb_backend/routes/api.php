@@ -70,12 +70,12 @@ Route::group(['prefix' => 'empresa', 'namespace'=>'empresa\\', 'middleware'=>'au
 });
 /**
  *
- * Rutas de CorreosEnviados en el sistema
+ * Rutas de Servicios en el sistema
  *
  */
-Route::group(['prefix' => 'correo', 'namespace'=>'correosEnviados\\', 'middleware'=>'auth:api'], function() {
-    Route::post('store', 'CorreosEnviadosController@store')->name('correo.store');
-    Route::get('', 'CorreosEnviadosController@correoList')->name('correo.list');
+Route::group(['prefix' => 'servicio', 'namespace'=>'servicios\\', 'middleware'=>'auth:api'], function() {
+    Route::post('store', 'ServiciosController@store')->name('servicio.store');
+    Route::get('', 'ServiciosController@correoList')->name('servicio.list');
     // Route::put('/{id}', 'CorreosEnviadosController@update')->name('correo.update');
     // Route::delete('/{id}', 'CorreosEnviadosController@delete')->name('correo.delete');
 });

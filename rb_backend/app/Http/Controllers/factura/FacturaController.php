@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\factura;
 
-use Illuminate\Http\Request;
+// use Illuminate\Http\Request;
+use App\Http\Requests\FacturaCreateRequest;
 use App\Http\Controllers\Controller;
+use App\Models\Facturas;
 
 class FacturaController extends Controller
 {
@@ -16,17 +18,19 @@ class FacturaController extends Controller
   * @method POST
   *
   */
-  public function store(EmpresaCreateRequest $request)
+  public function store(FacturaCreateRequest $request)
   {
-  		$empresa = new Empresas();
-  		$empresa->fill( $request->all() );
+  		$factura = new Facturas();
+  		$factura->fill( $request->all() );
 
-  		$empresa->save();
+  		$factura->save();
+
+      
 
   		return response()->json([
   			'ok'=> true,
-  			'empresa'=>$empresa,
-  			'mensaje'=>'Empresa creada correctamente'
+  			'factura'=>$factura,
+  			'mensaje'=>'Factura creada correctamente'
   		], 201);
   }
   /*---------------------------------------------------------------------------------------*/
